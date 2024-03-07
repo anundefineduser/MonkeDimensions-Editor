@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 [Serializable]
 public class AddonsData
@@ -19,6 +21,10 @@ public class DimensionDescriptor : MonoBehaviour
 
     public GameObject SpawnPosition;
     public GameObject TerminalPosition;
+
+    public LightingSettings SceneLightingSettings;
+    public RenderSettings renderSettings;
+
     public AddonsData Addons = new AddonsData();
 
     public List<string> GetAssociatedComponents(TriggerEvents.Events eventType)

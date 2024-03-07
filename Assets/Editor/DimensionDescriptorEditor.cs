@@ -10,7 +10,7 @@ using System;
 [CustomEditor(typeof(DimensionDescriptor))]
 public class DimensionDescriptorEditor : Editor
 {
-    SerializedProperty dimensionName, dimensionAuthor, dimensionDescription, playerSpawnPosition, terminalSpawnPosition, slipperyObjects, extraTerminals;
+    SerializedProperty dimensionName, dimensionAuthor, dimensionDescription, playerSpawnPosition, terminalSpawnPosition, sceneLightingSettings, slipperyObjects, extraTerminals;
 
     void OnEnable()
     {
@@ -20,6 +20,7 @@ public class DimensionDescriptorEditor : Editor
         dimensionDescription = serializedObject.FindProperty("Description");
         playerSpawnPosition = serializedObject.FindProperty("SpawnPosition");
         terminalSpawnPosition = serializedObject.FindProperty("TerminalPosition");
+        sceneLightingSettings = serializedObject.FindProperty("SceneLightingSettings");
         slipperyObjects = serializedObject.FindProperty("Addons.SlipperyObjects");
         extraTerminals = serializedObject.FindProperty("Addons.ExtraTerminals");
         #endregion
@@ -27,7 +28,7 @@ public class DimensionDescriptorEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        #region Not Sure What To Name This
+        #region Add GUI Elements
         serializedObject.Update();
 
         EditorGUILayout.PropertyField(dimensionName);
@@ -35,6 +36,8 @@ public class DimensionDescriptorEditor : Editor
         EditorGUILayout.PropertyField(dimensionDescription);
         EditorGUILayout.PropertyField(playerSpawnPosition);
         EditorGUILayout.PropertyField(terminalSpawnPosition);
+
+        EditorGUILayout.PropertyField(sceneLightingSettings);
 
         EditorGUILayout.PropertyField(slipperyObjects);
         EditorGUILayout.PropertyField(extraTerminals);
@@ -126,6 +129,8 @@ public class DimensionDescriptorEditor : Editor
             Description = descriptor.Description,
             SpawnPoint = descriptor.SpawnPosition.name,
             TerminalPoint = descriptor.TerminalPosition.name,
+            SceneLightingSettings = descriptor.SceneLightingSettings,
+            SceneRenderSettings = DimensionRenderSettings.CopySettings(),
             Addons = new
             {
                 SlipperyObjects = descriptor.Addons.SlipperyObjects.Select(go => go.name).ToList(),
