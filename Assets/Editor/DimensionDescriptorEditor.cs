@@ -122,24 +122,47 @@ public class DimensionDescriptorEditor : Editor
             });
         }
 
-        var dimensionDescriptor = new
+        bool hasLightingSettings = descriptor.SceneLightingSettings != null;
+        string jsonContent;
+        if (hasLightingSettings)
         {
-            Name = descriptor.Name,
-            Author = descriptor.Author,
-            Description = descriptor.Description,
-            SpawnPoint = descriptor.SpawnPosition.name,
-            TerminalPoint = descriptor.TerminalPosition.name,
-            SceneLightingSettings = descriptor.SceneLightingSettings,
-            SceneRenderSettings = DimensionRenderSettings.CopySettings(),
-            Addons = new
+            var dimensionDescriptor = new
             {
-                SlipperyObjects = descriptor.Addons.SlipperyObjects.Select(go => go.name).ToList(),
-                ExtraTerminals = descriptor.Addons.ExtraTerminals.Select(go => go.name).ToList(),
-                TriggerEvents = triggerEventsData
-            }
-        };
+                Name = descriptor.Name,
+                Author = descriptor.Author,
+                Description = descriptor.Description,
+                SpawnPoint = descriptor.SpawnPosition.name,
+                TerminalPoint = descriptor.TerminalPosition.name,
+                SceneLightingSettings = descriptor.SceneLightingSettings,
+                SceneRenderSettings = DimensionRenderSettings.CopySettings(),
+                Addons = new
+                {
+                    SlipperyObjects = descriptor.Addons.SlipperyObjects.Select(go => go.name).ToList(),
+                    ExtraTerminals = descriptor.Addons.ExtraTerminals.Select(go => go.name).ToList(),
+                    TriggerEvents = triggerEventsData
+                }
+            };
+            jsonContent = JsonConvert.SerializeObject(dimensionDescriptor, Formatting.Indented);
+        } else
+        {
+            var dimensionDescriptor = new
+            {
+                Name = descriptor.Name,
+                Author = descriptor.Author,
+                Description = descriptor.Description,
+                SpawnPoint = descriptor.SpawnPosition.name,
+                TerminalPoint = descriptor.TerminalPosition.name,
+                SceneRenderSettings = DimensionRenderSettings.CopySettings(),
+                Addons = new
+                {
+                    SlipperyObjects = descriptor.Addons.SlipperyObjects.Select(go => go.name).ToList(),
+                    ExtraTerminals = descriptor.Addons.ExtraTerminals.Select(go => go.name).ToList(),
+                    TriggerEvents = triggerEventsData
+                }
+            };
+            jsonContent = JsonConvert.SerializeObject(dimensionDescriptor, Formatting.Indented);
+        }
 
-        string jsonContent = JsonConvert.SerializeObject(dimensionDescriptor, Formatting.Indented);
         File.WriteAllText(Path.Combine(tempPrefabDirectory, "Package.json"), jsonContent);
         #endregion
 

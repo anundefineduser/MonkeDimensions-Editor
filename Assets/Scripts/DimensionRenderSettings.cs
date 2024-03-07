@@ -84,9 +84,11 @@ public class DimensionRenderSettings
         dimensionSettings.reflectionBounces = RenderSettings.reflectionBounces;
         dimensionSettings.reflectionIntensity = RenderSettings.reflectionIntensity;
         //dimensionSettings.skybox = RenderSettings.skybox;
-        dimensionSettings.skyboxName = RenderSettings.skybox.name;
+        if (RenderSettings.skybox != null)
+            dimensionSettings.skyboxName = RenderSettings.skybox.name;
         dimensionSettings.subtractiveShadowColor = CopyColor(RenderSettings.subtractiveShadowColor);
-        dimensionSettings.sunName = RenderSettings.sun.name;
+        if (RenderSettings.sun != null)
+            dimensionSettings.sunName = RenderSettings.sun.name;
         //dimensionSettings.sun = RenderSettings.sun;
         return dimensionSettings;
     }
